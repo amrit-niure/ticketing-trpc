@@ -6,11 +6,6 @@ import morgan from 'morgan';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
 
-import authRoutes from './routes/auth';
-import projectRoutes from './routes/projects';
-import ticketRoutes from './routes/tickets';
-import userRoutes from './routes/users';
-
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter, createTRPCContext } from './routers';
 
@@ -31,11 +26,6 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
-
-app.use("/api/auth", authRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/tickets", ticketRoutes);
-app.use("/api/users", userRoutes);
 
 app.use(
     "/trpc",

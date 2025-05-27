@@ -147,7 +147,7 @@ export const Header: React.FC = () => {
                   </DropdownMenuTrigger>{" "}
                   <DropdownMenuContent align="end" className="w-56">
                     <div className="px-3 py-2">
-                      <p className="text-sm font-medium text-foreground">
+                      <p className=" font-medium text-foreground">
                         {user?.name}
                       </p>
                       <p className="text-xs text-muted-foreground">
@@ -203,7 +203,7 @@ export const Header: React.FC = () => {
                     to={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={cn(
-                      "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
+                      "flex items-center px-4 py-3  font-medium rounded-lg transition-all duration-200",
                       isActive
                         ? "bg-primary/10 text-primary"
                         : "text-muted-foreground hover:text-foreground hover:bg-accent"
@@ -232,9 +232,7 @@ export const Header: React.FC = () => {
                     </AvatarFallback>{" "}
                   </Avatar>
                   <div className="ml-3 flex-1">
-                    <p className="text-sm font-medium text-foreground">
-                      {user?.name}
-                    </p>
+                    <p className=" font-medium text-foreground">{user?.name}</p>
                     <p className="text-xs text-muted-foreground">
                       {user?.email}
                     </p>{" "}
@@ -247,9 +245,7 @@ export const Header: React.FC = () => {
                 {/* Mobile Theme Toggle */}
                 <div className="px-4 py-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-foreground">
-                      Theme
-                    </span>
+                    <span className=" font-medium text-foreground">Theme</span>
                     <ThemeToggle />
                   </div>
                 </div>

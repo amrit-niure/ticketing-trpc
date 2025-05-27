@@ -43,8 +43,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (storedToken && storedUser) {
         try {
           setToken(storedToken);
-          setUser(JSON.parse(storedUser)); // Verify token is still valid by fetching profile
-          const profile = await trpcClient.users.getProfile.query();
+          setUser(JSON.parse(storedUser));
+          const profile = await trpcClient.users..query();
           setUser(profile);
         } catch (error) {
           console.error("Token validation failed:", error);

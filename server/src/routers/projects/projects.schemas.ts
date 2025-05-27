@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ProjectStatus } from '@prisma/client';
+import { ProjectStatus, Project } from '@prisma/client';
 
 export const getAllProjectsInputSchema = z.object({
     page: z.number().min(1).default(1),
@@ -7,6 +7,8 @@ export const getAllProjectsInputSchema = z.object({
     search: z.string().optional(),
     status: z.nativeEnum(ProjectStatus).optional(),
 });
+
+export type IProject = Project;
 export type GetAllProjectsInput = z.infer<typeof getAllProjectsInputSchema>;
 
 export const getProjectByIdInputSchema = z.object({

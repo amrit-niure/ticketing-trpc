@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import type { User } from "../types/user";
 import { trpcClient } from "../lib/trpc";
 import { useRouter } from "@tanstack/react-router";
+import type { UserProfile } from "@/types/user";
 
 interface AuthContextType {
-  user: User | null;
+  user: UserProfile | null;
   token: string | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -30,7 +30,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           setToken(storedToken);
           setUser(JSON.parse(storedUser));
-          const profile = await trpcClient.users..query();
+          const profile = await trpcClient.auth.getProfile.query();
           setUser(profile);
         } catch (error) {
           console.error("Token validation failed:", error);

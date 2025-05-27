@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { z } from "zod";
 
 // Input schemas
@@ -22,7 +23,7 @@ export const userOutput = z.object({
     id: z.string(),
     name: z.string(),
     email: z.string(),
-    role: z.enum(["USER", "AGENT", "ADMIN"]),
+    role: z.nativeEnum(Role),
     createdAt: z.date(),
     updatedAt: z.date()
 });

@@ -9,7 +9,6 @@ import {
   CreateProjectDialog,
   ProjectsHeader,
 } from "./-components";
-import { type Project } from "@/lib/api";
 
 export const Route = createFileRoute("/projects/")({
   component: ProjectsListPage,

@@ -50,5 +50,10 @@ export const authRouter = router({
         .output(userOutput)
         .query(async ({ ctx }) => {
             return validateUserToken(ctx.user.id);
+        }),
+    getProfile: protectedProcedure
+        .output(userOutput)
+        .query(async ({ ctx }) => {
+            return validateUserToken(ctx.user.id);
         })
 });

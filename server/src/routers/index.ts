@@ -1,15 +1,15 @@
 // backend/src/routers/index.ts
 import { router } from '../trpc';
-import { authRouter } from './schemas/auth.schema';
-import { userRouter } from './schemas/users.schema';
-import { ticketRouter } from './schemas/tickets.schema';
-import { projectRouter } from './schemas/projects.schema';
+import { authRouter } from './auth/auth.routers';
+import { userRouter } from './users/users.routers';
+import { ticketsRouter } from './tickets/tickets.routers';
+import { projectRouter } from './projects/projects.routers';
 
 // Main app router
 export const appRouter = router({
     auth: authRouter,
     users: userRouter,
-    tickets: ticketRouter,
+    tickets: ticketsRouter,
     projects: projectRouter,
 });
 

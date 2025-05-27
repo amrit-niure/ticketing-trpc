@@ -20,8 +20,16 @@ export declare const authRouter: import("@trpc/server/dist/unstable-core-do-not-
             password: string;
         };
         output: {
+            user: {
+                id: string;
+                email: string;
+                name: string;
+                role: "ADMIN" | "AGENT" | "USER";
+                createdAt: Date;
+                updatedAt: Date;
+            };
             token: string;
-            user: any;
+            message?: string | undefined;
         };
     }>;
     register: import("@trpc/server").TRPCMutationProcedure<{
@@ -29,22 +37,56 @@ export declare const authRouter: import("@trpc/server/dist/unstable-core-do-not-
             email: string;
             name: string;
             password: string;
+            role?: "ADMIN" | "AGENT" | "USER" | undefined;
         };
         output: {
+            user: {
+                id: string;
+                email: string;
+                name: string;
+                role: "ADMIN" | "AGENT" | "USER";
+                createdAt: Date;
+                updatedAt: Date;
+            };
             token: string;
-            user: any;
+            message?: string | undefined;
         };
     }>;
     me: import("@trpc/server").TRPCQueryProcedure<{
         input: void;
-        output: any;
+        output: {
+            id: string;
+            email: string;
+            name: string;
+            role: "ADMIN" | "AGENT" | "USER";
+            createdAt: Date;
+            updatedAt: Date;
+        };
     }>;
     refreshToken: import("@trpc/server").TRPCMutationProcedure<{
         input: void;
         output: {
+            user: {
+                id: string;
+                email: string;
+                name: string;
+                role: "ADMIN" | "AGENT" | "USER";
+                createdAt: Date;
+                updatedAt: Date;
+            };
             token: string;
-            user: any;
+        };
+    }>;
+    validate: import("@trpc/server").TRPCQueryProcedure<{
+        input: void;
+        output: {
+            id: string;
+            email: string;
+            name: string;
+            role: "ADMIN" | "AGENT" | "USER";
+            createdAt: Date;
+            updatedAt: Date;
         };
     }>;
 }>>;
-//# sourceMappingURL=auth.d.ts.map
+//# sourceMappingURL=auth.routers.d.ts.map

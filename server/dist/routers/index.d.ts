@@ -36,8 +36,16 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                 password: string;
             };
             output: {
+                user: {
+                    id: string;
+                    email: string;
+                    name: string;
+                    role: "ADMIN" | "AGENT" | "USER";
+                    createdAt: Date;
+                    updatedAt: Date;
+                };
                 token: string;
-                user: any;
+                message?: string | undefined;
             };
         }>;
         register: import("@trpc/server").TRPCMutationProcedure<{
@@ -45,21 +53,55 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                 email: string;
                 name: string;
                 password: string;
+                role?: "ADMIN" | "AGENT" | "USER" | undefined;
             };
             output: {
+                user: {
+                    id: string;
+                    email: string;
+                    name: string;
+                    role: "ADMIN" | "AGENT" | "USER";
+                    createdAt: Date;
+                    updatedAt: Date;
+                };
                 token: string;
-                user: any;
+                message?: string | undefined;
             };
         }>;
         me: import("@trpc/server").TRPCQueryProcedure<{
             input: void;
-            output: any;
+            output: {
+                id: string;
+                email: string;
+                name: string;
+                role: "ADMIN" | "AGENT" | "USER";
+                createdAt: Date;
+                updatedAt: Date;
+            };
         }>;
         refreshToken: import("@trpc/server").TRPCMutationProcedure<{
             input: void;
             output: {
+                user: {
+                    id: string;
+                    email: string;
+                    name: string;
+                    role: "ADMIN" | "AGENT" | "USER";
+                    createdAt: Date;
+                    updatedAt: Date;
+                };
                 token: string;
-                user: any;
+            };
+        }>;
+        validate: import("@trpc/server").TRPCQueryProcedure<{
+            input: void;
+            output: {
+                id: string;
+                email: string;
+                name: string;
+                role: "ADMIN" | "AGENT" | "USER";
+                createdAt: Date;
+                updatedAt: Date;
             };
         }>;
     }>>;
@@ -83,8 +125,8 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
             input: {
                 role?: "ADMIN" | "AGENT" | "USER" | undefined;
                 search?: string | undefined;
-                limit?: number | undefined;
                 page?: number | undefined;
+                limit?: number | undefined;
             };
             output: {
                 users: {
@@ -178,51 +220,88 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
         errorShape: import("@trpc/server/dist/unstable-core-do-not-import").DefaultErrorShape;
         transformer: false;
     }, import("@trpc/server/dist/unstable-core-do-not-import").DecorateCreateRouterOptions<{
-        getAll: import("@trpc/server").TRPCQueryProcedure<{
+        create: import("@trpc/server").TRPCMutationProcedure<{
             input: {
-                search?: string | undefined;
+                projectId: string;
+                subject: string;
+                description?: string | undefined;
                 status?: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED" | undefined;
                 priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT" | undefined;
-                projectId?: string | undefined;
                 assigneeId?: string | undefined;
-                limit?: number | undefined;
-                page?: number | undefined;
-                sortBy?: "createdAt" | "updatedAt" | "status" | "priority" | undefined;
-                sortOrder?: "asc" | "desc" | undefined;
             };
             output: {
-                tickets: ({
-                    project: {
-                        id: string;
-                        name: string;
-                    };
-                    requester: {
-                        id: string;
-                        name: string;
-                    };
-                    assignee: {
-                        id: string;
-                        email: string;
-                        name: string;
-                    } | null;
-                } & {
+                project: {
                     id: string;
+                    name: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    status: import(".prisma/client").$Enums.TicketStatus;
-                    description: string;
-                    subject: string;
-                    priority: import(".prisma/client").$Enums.TicketPriority;
-                    projectId: string;
-                    requesterId: string;
-                    assigneeId: string | null;
-                })[];
-                pagination: {
-                    total: number;
-                    pages: number;
-                    page: number;
-                    limit: number;
+                    description: string | null;
+                    status: import(".prisma/client").$Enums.ProjectStatus;
                 };
+                requester: {
+                    id: string;
+                    name: string;
+                };
+                assignee: {
+                    id: string;
+                    email: string;
+                    name: string;
+                    password: string;
+                    role: import(".prisma/client").$Enums.Role;
+                    createdAt: Date;
+                    updatedAt: Date;
+                } | null;
+            } & {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                description: string;
+                status: import(".prisma/client").$Enums.TicketStatus;
+                priority: import(".prisma/client").$Enums.TicketPriority;
+                projectId: string;
+                assigneeId: string | null;
+                subject: string;
+                requesterId: string;
+            };
+        }>;
+        update: import("@trpc/server").TRPCMutationProcedure<{
+            input: {
+                id: string;
+                description?: string | undefined;
+                status?: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED" | undefined;
+                priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT" | undefined;
+                assigneeId?: string | null | undefined;
+                subject?: string | undefined;
+            };
+            output: {
+                project: {
+                    id: string;
+                    name: string;
+                    createdAt: Date;
+                    updatedAt: Date;
+                    description: string | null;
+                    status: import(".prisma/client").$Enums.ProjectStatus;
+                };
+                requester: {
+                    id: string;
+                    name: string;
+                };
+                assignee: {
+                    id: string;
+                    email: string;
+                    name: string;
+                } | null;
+            } & {
+                id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                description: string;
+                status: import(".prisma/client").$Enums.TicketStatus;
+                priority: import(".prisma/client").$Enums.TicketPriority;
+                projectId: string;
+                assigneeId: string | null;
+                subject: string;
+                requesterId: string;
             };
         }>;
         getById: import("@trpc/server").TRPCQueryProcedure<{
@@ -261,8 +340,8 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                     name: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    status: import(".prisma/client").$Enums.ProjectStatus;
                     description: string | null;
+                    status: import(".prisma/client").$Enums.ProjectStatus;
                 };
                 requester: {
                     id: string;
@@ -286,97 +365,60 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                 id: string;
                 createdAt: Date;
                 updatedAt: Date;
-                status: import(".prisma/client").$Enums.TicketStatus;
                 description: string;
-                subject: string;
+                status: import(".prisma/client").$Enums.TicketStatus;
                 priority: import(".prisma/client").$Enums.TicketPriority;
                 projectId: string;
-                requesterId: string;
                 assigneeId: string | null;
+                subject: string;
+                requesterId: string;
             };
         }>;
-        create: import("@trpc/server").TRPCMutationProcedure<{
+        getAll: import("@trpc/server").TRPCQueryProcedure<{
             input: {
-                subject: string;
-                projectId: string;
+                search?: string | undefined;
                 status?: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED" | undefined;
-                description?: string | undefined;
+                page?: number | undefined;
+                limit?: number | undefined;
                 priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT" | undefined;
+                projectId?: string | undefined;
                 assigneeId?: string | undefined;
+                sortBy?: "createdAt" | "updatedAt" | "status" | "priority" | undefined;
+                sortOrder?: "asc" | "desc" | undefined;
             };
             output: {
-                project: {
+                tickets: ({
+                    project: {
+                        id: string;
+                        name: string;
+                    };
+                    requester: {
+                        id: string;
+                        name: string;
+                    };
+                    assignee: {
+                        id: string;
+                        email: string;
+                        name: string;
+                    } | null;
+                } & {
                     id: string;
-                    name: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    status: import(".prisma/client").$Enums.ProjectStatus;
-                    description: string | null;
+                    description: string;
+                    status: import(".prisma/client").$Enums.TicketStatus;
+                    priority: import(".prisma/client").$Enums.TicketPriority;
+                    projectId: string;
+                    assigneeId: string | null;
+                    subject: string;
+                    requesterId: string;
+                })[];
+                pagination: {
+                    total: number;
+                    pages: number;
+                    page: number;
+                    limit: number;
                 };
-                requester: {
-                    id: string;
-                    name: string;
-                };
-                assignee: {
-                    id: string;
-                    email: string;
-                    name: string;
-                    password: string;
-                    role: import(".prisma/client").$Enums.Role;
-                    createdAt: Date;
-                    updatedAt: Date;
-                } | null;
-            } & {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                status: import(".prisma/client").$Enums.TicketStatus;
-                description: string;
-                subject: string;
-                priority: import(".prisma/client").$Enums.TicketPriority;
-                projectId: string;
-                requesterId: string;
-                assigneeId: string | null;
-            };
-        }>;
-        update: import("@trpc/server").TRPCMutationProcedure<{
-            input: {
-                id: string;
-                status?: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED" | undefined;
-                description?: string | undefined;
-                subject?: string | undefined;
-                priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT" | undefined;
-                assigneeId?: string | null | undefined;
-            };
-            output: {
-                project: {
-                    id: string;
-                    name: string;
-                    createdAt: Date;
-                    updatedAt: Date;
-                    status: import(".prisma/client").$Enums.ProjectStatus;
-                    description: string | null;
-                };
-                requester: {
-                    id: string;
-                    name: string;
-                };
-                assignee: {
-                    id: string;
-                    email: string;
-                    name: string;
-                } | null;
-            } & {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                status: import(".prisma/client").$Enums.TicketStatus;
-                description: string;
-                subject: string;
-                priority: import(".prisma/client").$Enums.TicketPriority;
-                projectId: string;
-                requesterId: string;
-                assigneeId: string | null;
             };
         }>;
         delete: import("@trpc/server").TRPCMutationProcedure<{
@@ -406,71 +448,31 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                 authorId: string;
             };
         }>;
-        getComments: import("@trpc/server").TRPCQueryProcedure<{
+        addAttachment: import("@trpc/server").TRPCMutationProcedure<{
             input: {
                 ticketId: string;
+                filename: string;
+                filepath: string;
+                mimeType: string;
+                size: number;
             };
-            output: ({
-                author: {
-                    id: string;
-                    name: string;
-                };
-            } & {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                ticketId: string;
-                content: string;
-                authorId: string;
-            })[];
-        }>;
-        getActivityLogs: import("@trpc/server").TRPCQueryProcedure<{
-            input: {
-                ticketId: string;
-            };
-            output: ({
-                user: {
-                    id: string;
-                    name: string;
-                };
-            } & {
-                id: string;
-                createdAt: Date;
-                userId: string;
-                action: import(".prisma/client").$Enums.ActivityType;
-                details: string | null;
-                ticketId: string;
-            })[];
-        }>;
-        getStats: import("@trpc/server").TRPCQueryProcedure<{
-            input: void;
             output: {
-                totalTickets: number;
-                ticketsByStatus: (import(".prisma/client").Prisma.PickEnumerable<import(".prisma/client").Prisma.TicketGroupByOutputType, "status"[]> & {
-                    _count: {
-                        status: number;
-                    };
-                })[];
-                ticketsByPriority: (import(".prisma/client").Prisma.PickEnumerable<import(".prisma/client").Prisma.TicketGroupByOutputType, "priority"[]> & {
-                    _count: {
-                        priority: number;
-                    };
-                })[];
-                recentActivity: ({
-                    user: {
-                        name: string;
-                    };
-                    ticket: {
-                        subject: string;
-                    };
-                } & {
-                    id: string;
-                    createdAt: Date;
-                    userId: string;
-                    action: import(".prisma/client").$Enums.ActivityType;
-                    details: string | null;
-                    ticketId: string;
-                })[];
+                id: string;
+                createdAt: Date;
+                ticketId: string;
+                filename: string;
+                filepath: string;
+                mimeType: string;
+                size: number;
+            };
+        }>;
+        deleteAttachment: import("@trpc/server").TRPCMutationProcedure<{
+            input: {
+                ticketId: string;
+                attachmentId: string;
+            };
+            output: {
+                success: boolean;
             };
         }>;
     }>>;
@@ -494,8 +496,8 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
             input: {
                 search?: string | undefined;
                 status?: "ACTIVE" | "COMPLETED" | "ARCHIVED" | undefined;
-                limit?: number | undefined;
                 page?: number | undefined;
+                limit?: number | undefined;
             };
             output: {
                 projects: ({
@@ -507,8 +509,8 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                     name: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    status: import(".prisma/client").$Enums.ProjectStatus;
                     description: string | null;
+                    status: import(".prisma/client").$Enums.ProjectStatus;
                 })[];
                 pagination: {
                     total: number;
@@ -540,28 +542,28 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                     id: string;
                     createdAt: Date;
                     updatedAt: Date;
-                    status: import(".prisma/client").$Enums.TicketStatus;
                     description: string;
-                    subject: string;
+                    status: import(".prisma/client").$Enums.TicketStatus;
                     priority: import(".prisma/client").$Enums.TicketPriority;
                     projectId: string;
-                    requesterId: string;
                     assigneeId: string | null;
+                    subject: string;
+                    requesterId: string;
                 })[];
             } & {
                 id: string;
                 name: string;
                 createdAt: Date;
                 updatedAt: Date;
-                status: import(".prisma/client").$Enums.ProjectStatus;
                 description: string | null;
+                status: import(".prisma/client").$Enums.ProjectStatus;
             };
         }>;
         create: import("@trpc/server").TRPCMutationProcedure<{
             input: {
                 name: string;
-                status?: "ACTIVE" | "COMPLETED" | "ARCHIVED" | undefined;
                 description?: string | undefined;
+                status?: "ACTIVE" | "COMPLETED" | "ARCHIVED" | undefined;
             };
             output: {
                 _count: {
@@ -572,16 +574,16 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                 name: string;
                 createdAt: Date;
                 updatedAt: Date;
-                status: import(".prisma/client").$Enums.ProjectStatus;
                 description: string | null;
+                status: import(".prisma/client").$Enums.ProjectStatus;
             };
         }>;
         update: import("@trpc/server").TRPCMutationProcedure<{
             input: {
                 id: string;
                 name?: string | undefined;
-                status?: "ACTIVE" | "COMPLETED" | "ARCHIVED" | undefined;
                 description?: string | undefined;
+                status?: "ACTIVE" | "COMPLETED" | "ARCHIVED" | undefined;
             };
             output: {
                 _count: {
@@ -592,8 +594,8 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                 name: string;
                 createdAt: Date;
                 updatedAt: Date;
-                status: import(".prisma/client").$Enums.ProjectStatus;
                 description: string | null;
+                status: import(".prisma/client").$Enums.ProjectStatus;
             };
         }>;
         delete: import("@trpc/server").TRPCMutationProcedure<{
@@ -605,7 +607,7 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
             };
         }>;
         getStats: import("@trpc/server").TRPCQueryProcedure<{
-            input: void;
+            input: {};
             output: {
                 totalProjects: number;
                 projectsByStatus: (import(".prisma/client").Prisma.PickEnumerable<import(".prisma/client").Prisma.ProjectGroupByOutputType, "status"[]> & {
@@ -619,6 +621,7 @@ export declare const appRouter: import("@trpc/server/dist/unstable-core-do-not-i
                     _count: {
                         tickets: number;
                     };
+                    status: import(".prisma/client").$Enums.ProjectStatus;
                 }[];
             };
         }>;

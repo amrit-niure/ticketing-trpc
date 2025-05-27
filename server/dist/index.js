@@ -11,10 +11,6 @@ const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const path_1 = __importDefault(require("path"));
 const client_1 = require("@prisma/client");
-const auth_1 = __importDefault(require("./routes/auth"));
-const projects_1 = __importDefault(require("./routes/projects"));
-const tickets_1 = __importDefault(require("./routes/tickets"));
-const users_1 = __importDefault(require("./routes/users"));
 const express_2 = require("@trpc/server/adapters/express");
 const routers_1 = require("./routers");
 const app = (0, express_1.default)();
@@ -29,10 +25,6 @@ app.use((0, morgan_1.default)("combined"));
 app.use(express_1.default.json({ limit: "10mb" }));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "../uploads")));
-app.use("/api/auth", auth_1.default);
-app.use("/api/projects", projects_1.default);
-app.use("/api/tickets", tickets_1.default);
-app.use("/api/users", users_1.default);
 app.use("/trpc", (0, express_2.createExpressMiddleware)({
     router: routers_1.appRouter,
     createContext: routers_1.createTRPCContext,
